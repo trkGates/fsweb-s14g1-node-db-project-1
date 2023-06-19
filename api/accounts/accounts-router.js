@@ -36,17 +36,30 @@ router.post(
   }
 );
 
-router.put("/:id", (req, res, next) => {
-  // KODLAR BURAYA
+router.put(
+  "/:id",
+  mid.checkAccountId,
+  mid.checkAccountNameUnique,
+  mid.checkAccountPayload,
+  async (req, res, next) => {
+    try {
+      const updatedAccount = await accounts.updateById(req.params.id, req.body);
+      res.status(200).json(updatedAccount);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.delete("/:id", mid.checkAccountId, async (req, res, next) => {
+  try {
+    await accounts.deleteById(req.params.id);
+    res.status(200).json(req.account);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.delete("/:id", (req, res, next) => {
-  // KODLAR BURAYA
-});
 
-router.use((err, req, res, next) => {
-  // eslint-disable-line
-  // KODLAR BURAYA
-});
 
 module.exports = router;
