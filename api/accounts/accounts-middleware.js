@@ -2,15 +2,15 @@ const Account = require("./accounts-model");
 
 exports.checkAccountPayload = async (req, res, next) => {
   try {
-    const AccountStatus = (await req.body.name) && req.body.budget;
+    const AccountStatus = (await req.body.name && req.body.budget);
     if (!AccountStatus) {
       res.status(400).json({ message: "name and budget are required" });
-    } else if (req.body.name.length < 3 || req.body.name.length > 100) {
+    } else if (req.body.name.trim().length < 3 || req.body.name.trim().length > 100) {
       res
         .status(400)
         .json({ message: "name of account must be between 3 and 100" });
     } else if (typeof req.body.budget !== "number") {
-      res.status(400).json({ message: "budget of account must be a number" });
+      res.status(400).json({message:"budget of account must be a number"});
     } else if (req.body.budget < 0 || req.body.budget > 1000000) {
       res
         .status(400)
@@ -29,7 +29,7 @@ exports.checkAccountNameUnique = async (req, res, next) => {
     if (AccountName) {
       res
         .status(400)
-        .json({ message: "Bu isim alınmış. Lütfen başka bir isim deneyiniz." });
+        .json({ message: "that name is taken" });
     } else {
       next();
     }

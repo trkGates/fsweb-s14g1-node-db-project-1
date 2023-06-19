@@ -26,7 +26,7 @@ router.post(
   async (req, res, next) => {
     try {
       const newAccount = await accounts.create({
-        name: req.body.name,
+        name: req.body.name.trim(),
         budget: req.body.budget,
       });
       res.status(201).json(newAccount);
@@ -59,7 +59,5 @@ router.delete("/:id", mid.checkAccountId, async (req, res, next) => {
     next(error);
   }
 });
-
-
 
 module.exports = router;
